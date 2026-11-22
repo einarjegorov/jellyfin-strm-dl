@@ -66,6 +66,12 @@ packages the plugin before publishing the release assets. The tracked
 download URL and ZIP checksum required by Jellyfin's **Manage repositories**
 feature.
 
+Create the tag and let the workflow publish the release. If a release already
+exists, its assets are uploaded or replaced while its title and notes are kept.
+To repair a release, open **Actions → Build and release → Run workflow**, select
+`master`, and enter its tag (for example, `v1.0.0`) in `release_tag`. This uses the
+updated workflow and builds the source at that tag.
+
 ## License
 
 Project source is licensed under [MIT](LICENSE). Compiled plugin releases are
