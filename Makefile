@@ -1,4 +1,4 @@
-DOTNET ?= mise exec -- dotnet
+DOTNET ?= dotnet
 PYTHON ?= python3
 REPOSITORY ?= einarjegorov/jellyfin-strm-dl
 TEST_JELLYFIN_VERSION ?= 12.0.0

@@ -11,8 +11,6 @@ proxying, resume support and no media writes to disk. No configuration required.
 - Install **STRM Download** from the catalog.
 - Restart Jellyfin.
 
-The repository URL becomes available when the first GitHub release is published.
-
 For manual installation, download the ZIP from
 [Releases](https://github.com/einarjegorov/jellyfin-strm-dl/releases), stop Jellyfin,
 and extract it into a `StrmDownload` subfolder of your server's plugin directory.
@@ -38,43 +36,15 @@ signed URLs are preserved and URL credentials are not logged by the plugin.
 
 ## Build and test
 
-Requires [mise](https://mise.jdx.dev/), Make and Python 3.11+:
+Requires the .NET 10 SDK, Make and Python 3.11+.
 
 ```sh
-mise trust
-mise install
 make test
-make package
+make build
 ```
 
-`artifacts/` contains the DLL, installable ZIP, populated catalog and SHA-256
-checksums. Automated tests use in-memory HTTP handlers; test the final DLL with
-your server and clients before releasing.
-
-The source is split into the download result filter, bounded STRM reader, HTTP
-proxy, filename handling and plugin registration. Tests cover HTTP behavior,
-credential isolation, cancellation, metadata and release packaging.
-
-## Release
-
-Pushes to `master` run checks and upload build artifacts. To publish a release,
-push a matching `v<Version>` tag: `v1.0.0` publishes plugin version `1.0.0.0`.
-For subsequent releases, update `Version` and `AssemblyVersion` in the plugin
-project and run the checks above before tagging. GitHub Actions tests and
-packages the plugin before publishing the release assets. The tracked
-`manifest.json` is the catalog template; the release asset contains the version,
-download URL and ZIP checksum required by Jellyfin's **Manage repositories**
-feature.
-
-Each release publishes two assets: the install ZIP (DLL, licenses and source
-notices) and `manifest.json`. Jellyfin reads the catalog separately and uses its
-checksum to verify the ZIP. Standalone build files stay in CI artifacts.
-
-Create the tag and let the workflow publish the release. If a release already
-exists, its assets are uploaded or replaced while its title and notes are kept.
-To repair a release, open **Actions → Build and release → Run workflow**, select
-`master`, and enter its tag (for example, `v1.0.0`) in `release_tag`. This uses the
-updated workflow and builds the source at that tag.
+Source is in `src/`, tests in `tests/`, and the built DLL in `artifacts/`.
+Run `make package` to also generate the install ZIP and catalog.
 
 ## License
 
