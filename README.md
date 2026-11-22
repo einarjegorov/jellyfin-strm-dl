@@ -70,3 +70,7 @@ distributed under [GPL-3.0-only](LICENSE.GPL-3.0), following
 [Jellyfin's licensing guidance](https://github.com/jellyfin/jellyfin-plugin-template#licensing).
 Releases include both license texts, [notices](NOTICE), and links to the matching
 source tag and archive. The source license remains MIT.
+
+## AI Disclosure
+
+AI-assisted tools were used during the development of this plugin.
