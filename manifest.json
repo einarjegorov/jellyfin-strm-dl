@@ -1,0 +1,11 @@
+[
+  {
+    "guid": "e8c052f3-3b7c-47f7-979a-2768dc1fb41c",
+    "name": "STRM Download",
+    "overview": "Download the media behind STRM files.",
+    "description": "Proxies HTTP(S) media through Jellyfin's Download endpoint, with range support and no media writes to disk.",
+    "owner": "einarjegorov",
+    "category": "General",
+    "versions": []
+  }
+]
