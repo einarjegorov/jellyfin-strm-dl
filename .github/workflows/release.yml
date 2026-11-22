@@ -62,10 +62,11 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
         run: |
+          assets=(artifacts/*.zip artifacts/manifest.json)
           if gh release view "$RELEASE_TAG" --json tagName > /dev/null 2>&1; then
-            gh release upload "$RELEASE_TAG" artifacts/* --clobber
+            gh release upload "$RELEASE_TAG" "${assets[@]}" --clobber
           else
-            gh release create "$RELEASE_TAG" artifacts/* \
+            gh release create "$RELEASE_TAG" "${assets[@]}" \
               --verify-tag --title "STRM Download $RELEASE_TAG" \
               --notes-file artifacts/NOTICE --generate-notes
           fi

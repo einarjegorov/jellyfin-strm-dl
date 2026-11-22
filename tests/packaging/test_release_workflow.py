@@ -17,7 +17,8 @@ class ReleaseWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
             (directory / "artifacts").mkdir()
-            for name in ["plugin.zip", "manifest.json", "NOTICE"]:
+            for name in ["plugin.zip", "manifest.json", "NOTICE", "LICENSE", "LICENSE.MIT",
+                         "SHA256SUMS", "Jellyfin.Plugin.StrmDownload.dll"]:
                 (directory / "artifacts" / name).write_text("test artifact")
             fake_gh = directory / "gh"
             fake_gh.write_text(
@@ -40,12 +41,16 @@ class ReleaseWorkflowTests(unittest.TestCase):
         self.assertEqual("release view v1.0.0 --json tagName", calls[0])
         self.assertTrue(calls[1].startswith("release upload v1.0.0 "))
         self.assertIn("artifacts/manifest.json", calls[1])
+        self.assertEqual(["artifacts/plugin.zip", "artifacts/manifest.json", "--clobber"],
+                         calls[1].split()[3:])
         self.assertIn("--clobber", calls[1])
 
     def test_creates_missing_release_with_license_notices(self):
         calls = self.run_publish_step(exists=False)
         self.assertEqual(2, len(calls))
         self.assertTrue(calls[1].startswith("release create v1.0.0 "))
+        self.assertEqual(["artifacts/plugin.zip", "artifacts/manifest.json", "--verify-tag"],
+                         calls[1].split()[3:6])
         self.assertIn("--verify-tag", calls[1])
         self.assertIn("--notes-file artifacts/NOTICE", calls[1])
         self.assertIn("--generate-notes", calls[1])

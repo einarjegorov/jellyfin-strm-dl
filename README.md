@@ -13,10 +13,10 @@ proxying, resume support and no media writes to disk. No configuration required.
 
 The repository URL becomes available when the first GitHub release is published.
 
-For manual installation, download the DLL from
+For manual installation, download the ZIP from
 [Releases](https://github.com/einarjegorov/jellyfin-strm-dl/releases), stop Jellyfin,
-and copy it into a `StrmDownload` subfolder of your server's plugin directory.
-Restart Jellyfin. Do not copy dependency DLLs or test output.
+and extract it into a `StrmDownload` subfolder of your server's plugin directory.
+Restart Jellyfin.
 
 ## Compatibility
 
@@ -65,6 +65,10 @@ packages the plugin before publishing the release assets. The tracked
 `manifest.json` is the catalog template; the release asset contains the version,
 download URL and ZIP checksum required by Jellyfin's **Manage repositories**
 feature.
+
+Each release publishes two assets: the install ZIP (DLL, licenses and source
+notices) and `manifest.json`. Jellyfin reads the catalog separately and uses its
+checksum to verify the ZIP. Standalone build files stay in CI artifacts.
 
 Create the tag and let the workflow publish the release. If a release already
 exists, its assets are uploaded or replaced while its title and notes are kept.
