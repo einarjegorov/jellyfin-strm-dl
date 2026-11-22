@@ -22,8 +22,17 @@ class PackageTests(unittest.TestCase):
             archive, manifest = release.package("example/plugin", dll, output)
             archive_bytes = archive.read_bytes()
             with ZipFile(archive) as bundle:
-                self.assertEqual([release.DLL_NAME, "LICENSE"], bundle.namelist())
+                self.assertEqual([release.DLL_NAME, "LICENSE", "LICENSE.MIT", "NOTICE"], bundle.namelist())
                 self.assertEqual(dll.read_bytes(), bundle.read(release.DLL_NAME))
+                self.assertEqual((ROOT / "LICENSE.GPL-3.0").read_bytes(), bundle.read("LICENSE"))
+                self.assertEqual((ROOT / "LICENSE").read_bytes(), bundle.read("LICENSE.MIT"))
+                self.assertTrue(bundle.read("LICENSE.MIT").startswith(b"MIT License"))
+                self.assertIn(b"GNU GENERAL PUBLIC LICENSE", bundle.read("LICENSE"))
+                self.assertIn(b"GPL-3.0-only", bundle.read("NOTICE"))
+                self.assertIn(b"https://github.com/example/plugin/tree/v", bundle.read("NOTICE"))
+                self.assertIn(b"https://github.com/example/plugin/archive/refs/tags/v", bundle.read("NOTICE"))
+                for name in bundle.namelist():
+                    self.assertEqual((output / name).read_bytes(), bundle.read(name))
                 self.assertIsNone(bundle.testzip())
             catalog = json.loads(manifest.read_text())
             version = catalog[0]["versions"][0]
@@ -31,6 +40,9 @@ class PackageTests(unittest.TestCase):
             self.assertEqual("12.0.0.0", version["targetAbi"])
             self.assertTrue(version["sourceUrl"].startswith("https://github.com/example/plugin/releases/download/v"))
             self.assertTrue(version["sourceUrl"].endswith("/" + archive.name))
+            tag = "v" + version["version"].removesuffix(".0")
+            self.assertIn(f"/tree/{tag}\n", (output / "NOTICE").read_text())
+            self.assertIn(f"/refs/tags/{tag}.tar.gz\n", (output / "NOTICE").read_text())
             self.assertEqual(hashlib.md5(archive_bytes, usedforsecurity=False).hexdigest(), version["checksum"])
             for line in (output / "SHA256SUMS").read_text().splitlines():
                 checksum, name = line.split("  ")

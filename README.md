@@ -63,4 +63,10 @@ before publishing the release assets. The tracked `manifest.json` is the catalog
 template; the release asset contains the version, download URL and ZIP checksum
 required by Jellyfin's **Manage repositories** feature.
 
-Licensed under [GPL-3.0-only](LICENSE).
+## License
+
+Project source is licensed under [MIT](LICENSE). Compiled plugin releases are
+distributed under [GPL-3.0-only](LICENSE.GPL-3.0), following
+[Jellyfin's licensing guidance](https://github.com/jellyfin/jellyfin-plugin-template#licensing).
+Releases include both license texts, [notices](NOTICE), and links to the matching
+source tag and archive. The source license remains MIT.

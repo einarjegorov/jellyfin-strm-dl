@@ -1,0 +1,20 @@
+STRM Download
+
+The original project source is licensed under the MIT License. Its copyright
+and permission notice is in LICENSE in the source repository and LICENSE.MIT
+in compiled release distributions.
+
+The compiled plugin links against Jellyfin's GPLv3-licensed NuGet packages.
+Compiled releases are distributed under GPL-3.0-only, following Jellyfin's
+plugin licensing guidance:
+https://github.com/jellyfin/jellyfin-plugin-template#licensing
+
+The full GPLv3 text is in LICENSE.GPL-3.0 in the source repository and LICENSE
+in compiled release distributions. The GPL's source distribution requirements
+apply when redistributing those binaries. The original source remains MIT.
+
+Jellyfin packages are copyright their respective contributors. Their source
+is available at https://github.com/jellyfin/jellyfin. Dependency assemblies
+are supplied by the Jellyfin server and are not bundled in this release.
+
+This software is provided without warranty; see the included license texts.

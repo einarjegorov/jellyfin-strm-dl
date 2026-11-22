@@ -30,12 +30,25 @@ def package(repository, dll, output, tag=None):
     target_abi = ".".join((target_abi.split(".") + ["0"] * 4)[:4])
 
     dll_bytes = dll.read_bytes()
+    source_url = f"https://github.com/{repository}/tree/v{version}"
+    notice = (ROOT / "NOTICE").read_text() + (
+        f"\nCorresponding source for this release: {source_url}\n"
+        f"Source archive: https://github.com/{repository}/archive/refs/tags/v{version}.tar.gz\n"
+        "Build instructions and scripts are included in that source tree.\n"
+    )
+    release_files = {
+        DLL_NAME: dll_bytes,
+        "LICENSE": (ROOT / "LICENSE.GPL-3.0").read_bytes(),
+        "LICENSE.MIT": (ROOT / "LICENSE").read_bytes(),
+        "NOTICE": notice.encode("utf-8"),
+    }
     output.mkdir(parents=True, exist_ok=True)
-    (output / DLL_NAME).write_bytes(dll_bytes)
+    for name, data in release_files.items():
+        (output / name).write_bytes(data)
     archive = output / f"strm-download_{assembly_version}.zip"
     # Stable metadata keeps the ZIP checksum identical for identical input files.
     with ZipFile(archive, "w", compression=ZIP_DEFLATED) as bundle:
-        for name, data in [(DLL_NAME, dll_bytes), ("LICENSE", (ROOT / "LICENSE").read_bytes())]:
+        for name, data in release_files.items():
             entry = ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
             entry.compress_type = ZIP_DEFLATED
             entry.create_system = 3
@@ -55,7 +68,7 @@ def package(repository, dll, output, tag=None):
     }]
     manifest = output / "manifest.json"
     manifest.write_text(json.dumps(catalog, indent=2) + "\n")
-    hashes = {DLL_NAME: dll_bytes, archive.name: archive.read_bytes(), manifest.name: manifest.read_bytes()}
+    hashes = {**release_files, archive.name: archive.read_bytes(), manifest.name: manifest.read_bytes()}
     (output / "SHA256SUMS").write_text("".join(
         f"{hashlib.sha256(data).hexdigest()}  {name}\n" for name, data in hashes.items()
     ))

@@ -8,6 +8,7 @@
     <AssemblyVersion>0.1.1.0</AssemblyVersion>
     <Description>Stream HTTP media behind STRM files through Jellyfin's Download endpoint.</Description>
     <DebugType>embedded</DebugType>
+    <!-- Compiled distribution license; original source is MIT (see LICENSE). -->
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/einarjegorov/jellyfin-strm-dl</RepositoryUrl>
   </PropertyGroup>
