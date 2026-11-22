@@ -57,11 +57,14 @@ credential isolation, cancellation, metadata and release packaging.
 
 ## Release
 
-Update `Version` and `AssemblyVersion` in the plugin project, run the checks above,
-then push a matching `v<Version>` tag. GitHub Actions tests and packages the plugin
-before publishing the release assets. The tracked `manifest.json` is the catalog
-template; the release asset contains the version, download URL and ZIP checksum
-required by Jellyfin's **Manage repositories** feature.
+Pushes to `master` run checks and upload build artifacts. To publish a release,
+push a matching `v<Version>` tag: `v1.0.0` publishes plugin version `1.0.0.0`.
+For subsequent releases, update `Version` and `AssemblyVersion` in the plugin
+project and run the checks above before tagging. GitHub Actions tests and
+packages the plugin before publishing the release assets. The tracked
+`manifest.json` is the catalog template; the release asset contains the version,
+download URL and ZIP checksum required by Jellyfin's **Manage repositories**
+feature.
 
 ## License
 
